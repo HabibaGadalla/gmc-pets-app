@@ -1,10 +1,12 @@
 import "./App.css";
-import { PetsList } from "./components/PetsList";
-import { petsListInfo } from "./util/petsFactory";
-import { Layout, Button, Space } from "antd";
 import { useEffect, useState } from "react";
 import useFilter from "./hooks/filterHook";
-import { PetsFilter } from "./components/PetsFilter";
+
+import { petsListInfo } from "./util/petsFactory";
+
+import { Layout, Button, Space } from "antd";
+
+import { PetsFilter, PetsList} from "./components";
 
 const { Content } = Layout;
 
@@ -15,10 +17,11 @@ function App() {
   const [filterValue, setFilterValue] = useState("");
 
   const filteredList = useFilter(filter, filterValue, petsList);
+  const filterNamesList = ["race", "location", "type", "isAdopted", "name"];
 
-  const handleFilter = (filterName,filterValue) => {
+  const handleFilter = (filterName, filterValue) => {
     setFilterValue(filterValue);
-    setFilter(filterName)
+    setFilter(filterName);
   };
   const handleAdoption = (petId) => {
     const chosenPetIndex = petsList.findIndex((pet) => pet.id === petId);
@@ -29,11 +32,13 @@ function App() {
     setPetsList(newPetsList);
   };
 
+// get inital list from list saved in local storage, if no list in storage, use inital list from factory
   useEffect(() => {
     const savedList = JSON.parse(localStorage.getItem("pets")) || petsList;
     setPetsList(savedList);
   }, []);
 
+  //set list in storage when list gets updated
   useEffect(() => {
     localStorage.setItem("pets", JSON.stringify(petsList));
   }, [petsList]);
@@ -42,30 +47,17 @@ function App() {
     <div className="App">
       <Content>
         <Space size="large">
-          <PetsFilter
-            petsList={petsList}
-            filterName="race"
-            handleFilter = {handleFilter}
-            filterOptions={[
-              { name: "dog", value: "dog"},
-              { name: "cat", value: "cat"},
-            ]}
-          />
-          <PetsFilter
-            petsList={petsList}
-            filterName="isAdopted"
-            handleFilter = {handleFilter}
-            filterOptions={[
-              {
-                name: "pet is adopted",
-                value: true,
-              },
-              {
-                name: "pet is available",
-                value: false,
-              },
-            ]}
-          />
+          {filterNamesList.map((filterName, index) => (
+            <PetsFilter
+              key={index}
+              petsList={petsList}
+              filterName={filterName}
+              handleFilter={handleFilter}
+              filterOptions={petsList.map((pet) => {
+                return { name: pet[filterName].toString(), value: pet[filterName] };
+              })}
+            />
+          ))}
           <Button onClick={() => setFilter("")}>clear</Button>
         </Space>
 
