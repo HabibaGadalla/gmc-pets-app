@@ -21,7 +21,7 @@ export const petsListInfo = [
         id:3,
         name: 'marzo2a',
         race: 'cat',
-        type: 'white cat',
+        type: 'pretty cat',
         location: 'garden',
         isAdopted: false,
         photo: 'https://blog.ferplast.com/wp-content/uploads/2019/07/owning-a-white-cat-5b1b91a318ba9-1024x683.jpg'
