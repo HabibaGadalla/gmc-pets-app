@@ -37,7 +37,7 @@ export const petsListInfo = [
     },
     {
         id:5,
-        name: 'winnie',
+        name: 'nemo',
         race: 'bear',
         type: 'honey bear',
         location: 'garden',
