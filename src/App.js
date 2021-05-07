@@ -50,7 +50,6 @@ function App() {
           {filterNamesList.map((filterName, index) => (
             <PetsFilter
               key={index}
-              petsList={petsList}
               filterName={filterName}
               handleFilter={handleFilter}
               filterOptions={petsList.map((pet) => {
